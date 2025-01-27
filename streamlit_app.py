@@ -13,19 +13,22 @@ st.write(
     Cruce de reportes de cobros, facturas emitidas y facturas registradas.
     """
 )
-# create an excel file upload widget
-upload_file = st.file_uploader("Cargar reporte", type=["xlsx"])
+# create multiple excel file uploaders
+# if all the data is in the same file, the file gets very large
+upload_facturas = st.file_uploader("Sube el archivo de facturas", type=["xlsx"])
+upload_facturas_x_concepto = st.file_uploader("Sube el archivo de facturas por concepto", type=["xlsx"])
+upload_consecutivo_facturacion = st.file_uploader("Sube el archivo de consecutivo de facturación", type=["xlsx"])
+upload_cobros = st.file_uploader("Sube el archivo de cobros", type=["xlsx"])
 
 # check if the file is uploaded
-if upload_file is not None:
+if upload_facturas is not None and upload_facturas_x_concepto is not None and upload_consecutivo_facturacion is not None and upload_cobros is not None:
     # read the excel file
     try:
-        facturas_x_concepto = pd.read_excel(upload_file, sheet_name="FacturasConceptos")
-        facturas = pd.read_excel(upload_file, sheet_name="Facturas")
-        consecutivo_facturacion = pd.read_excel(upload_file, sheet_name="ConsecutivoFacturacion")
-        cobros = pd.read_excel(upload_file, sheet_name="Cobros")
+        facturas_x_concepto = pd.read_excel(upload_facturas_x_concepto,)
+        facturas = pd.read_excel(upload_facturas)
+        consecutivo_facturacion = pd.read_excel(upload_consecutivo_facturacion)
+        cobros = pd.read_excel(upload_cobros)
     except Exception as e:
-        st.write("Asegúrate de que el archivo contenga las hojas: Facturas, FacturasConceptos, ConsecutivoFacturacion y Cobros")
         st.write(f"Error: {e}")
 
     # Load the data from a CSV. We're caching this so it doesn't reload every time the app
