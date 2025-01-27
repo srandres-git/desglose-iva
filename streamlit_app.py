@@ -33,7 +33,7 @@ if upload_file is not None:
     # reruns (e.g. if the user interacts with the widgets).
     @st.cache
     def load_data():
-        return generar_reporte(facturas_x_concepto, facturas, consecutivo_facturacion, cobros)
+        return generar_reporte(facturas=facturas, facturas_x_concepto=facturas_x_concepto, consecutivo_facturacion=consecutivo_facturacion, cobros=cobros)
 
     cobros, resumen = load_data()
 
