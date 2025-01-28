@@ -21,9 +21,17 @@ upload_file = st.file_uploader("Reportes en un solo archivo", type=["xlsx"])
 if upload_file is not None:
     # read the excel file
     try:
-        facturas_x_concepto = pd.read_excel(upload_file, sheet_name="FacturasConceptos")
+        # progress widget ('leyendo facturas')
+        st.write("Leyendo facturas...")
         facturas = pd.read_excel(upload_file, sheet_name="Facturas")
+        # progress widget ('leyendo facturas por concepto')
+        st.write("Leyendo facturas por concepto...")
+        facturas_x_concepto = pd.read_excel(upload_file, sheet_name="FacturasConceptos")
+        # progress widget ('leyendo consecutivo de facturación')
+        st.write("Leyendo consecutivo de facturación...")
         consecutivo_facturacion = pd.read_excel(upload_file, sheet_name="ConsecutivoFacturacion")
+        # progress widget ('leyendo cobros')
+        st.write("Leyendo cobros...")
         cobros = pd.read_excel(upload_file, sheet_name="Cobros")
     except Exception as e:
         st.write("Asegúrese de que el archivo cargado sea un archivo excel con las hojas: FacturasConceptos, Facturas, ConsecutivoFacturacion y Cobros")
@@ -33,6 +41,8 @@ if upload_file is not None:
     # reruns (e.g. if the user interacts with the widgets).
     @st.cache
     def load_data():
+        # progress widget ('generando reporte')
+        st.write("Generando reporte...")
         return generar_reporte(facturas=facturas, facturas_x_concepto=facturas_x_concepto, consecutivo_facturacion=consecutivo_facturacion, cobros=cobros)
 
     cobros, resumen = load_data()
@@ -59,7 +69,10 @@ if upload_file is not None:
     st.dataframe(
         resumen,
         use_container_width=True,
-        # column_config={"year": st.column_config.TextColumn("Year")},
+    )
+    st.dataframe(
+        cobros,
+        use_container_width=True,
     )
 
     # # Display the data as an Altair chart using `st.altair_chart`.
